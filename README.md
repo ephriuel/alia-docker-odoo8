@@ -1,1 +1,1 @@
-# alia-dokcer-odoo8
+# alia-docker-odoo8
