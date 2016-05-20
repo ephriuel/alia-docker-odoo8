@@ -10,4 +10,4 @@ ENV LC_ALL es_ES.UTF-8
 # Install dependencies
 RUN sh -c "echo 'deb http://apt.anybox.fr/openerp common main' >> /etc/apt/sources.list.d/openerp.list"
 RUN apt-get update
-RUN apt-get install -y openerp-server-system-build-deps 
+RUN apt-get install -y --force-yes openerp-server-system-build-deps 
