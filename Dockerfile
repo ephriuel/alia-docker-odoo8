@@ -48,3 +48,5 @@ RUN /home/alia/odoo8/bin/python /home/alia/odoo8/bootstrap.py
 
 # Execute buildout 
 RUN /home/alia/odoo8/bin/buildout
+
+EXPOSE 8069
