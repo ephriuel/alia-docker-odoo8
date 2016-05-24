@@ -12,11 +12,13 @@ ENV LC_ALL es_ES.UTF-8
 RUN sh -c "echo 'deb http://apt.anybox.fr/openerp common main' >> /etc/apt/sources.list.d/openerp.list"
 RUN apt-get update
 RUN apt-get install -y --force-yes openerp-server-system-build-deps 
+RUN apt-get install -y --force-yes libffi-dev
 
 # Install pip
 RUN apt-get install -y --force-yes python-pip
 RUN pip install virtualenv
 
+# Create new user alia
 RUN adduser --home=/home/alia --disabled-password --gecos "" --shell=/bin/bash alia
 
 # Install wkhtmltopdf
@@ -26,12 +28,23 @@ RUN adduser --home=/home/alia --disabled-password --gecos "" --shell=/bin/bash a
 #        && apt-get -y install -f --no-install-recommends \
 #        && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
 #        && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
-        
+
+# Log as alia        
 USER alia
 ENV HOME /home/alia
+
+# Create odoo directory
 RUN mkdir /home/alia/odoo8
 WORKDIR /home/alia/odoo8
+
+# Add buildout config files
 ADD . /home/alia/odoo8
+
+# Create virtual environment
 RUN virtualenv /home/alia/odoo8
+
+# Run bootstrap
 RUN /home/alia/odoo8/bin/python /home/alia/odoo8/bootstrap.py
+
+# Execute buildout 
 RUN /home/alia/odoo8/bin/buildout
