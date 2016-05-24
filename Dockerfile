@@ -11,10 +11,13 @@ ENV LC_ALL es_ES.UTF-8
 # Install dependencies
 RUN sh -c "echo 'deb http://apt.anybox.fr/openerp common main' >> /etc/apt/sources.list.d/openerp.list"
 RUN apt-get update
-RUN apt-get install -y --force-yes openerp-server-system-build-deps 
-RUN apt-get install -y --force-yes libffi-dev
+RUN apt-get install -y --force-yes openerp-server-system-build-deps \
+		libffi-dev \
+		python-dev \
+		libpq-dev \
+		libreadline-dev		
 
-# Install pip
+# Install pip and virtualenv
 RUN apt-get install -y --force-yes python-pip
 RUN pip install virtualenv
 
