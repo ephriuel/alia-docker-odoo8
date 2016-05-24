@@ -30,7 +30,7 @@ RUN adduser --home=/home/alia --disabled-password --gecos "" --shell=/bin/bash a
 USER alia
 ENV HOME /home/alia
 RUN mkdir /home/alia/odoo8
-WORKDIR /homw/alia/odoo8
+WORKDIR /home/alia/odoo8
 ADD . /home/alia/odoo8
 RUN virtualenv /home/alia/odoo8
 RUN /home/alia/odoo8/bin/python /home/alia/odoo8/bootstrap.py
