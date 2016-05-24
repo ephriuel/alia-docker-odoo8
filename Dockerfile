@@ -1,5 +1,6 @@
 # Dockerfile
 FROM ubuntu:14.04
+MAINTAINER Loxo Lueiro Astray
 
 # Set the locale
 RUN locale-gen es_ES.UTF-8
@@ -11,3 +12,26 @@ ENV LC_ALL es_ES.UTF-8
 RUN sh -c "echo 'deb http://apt.anybox.fr/openerp common main' >> /etc/apt/sources.list.d/openerp.list"
 RUN apt-get update
 RUN apt-get install -y --force-yes openerp-server-system-build-deps 
+
+# Install pip
+RUN apt-get install -y --force-yes python-pip
+RUN pip install virtualenv
+
+RUN adduser --home=/home/alia --disabled-password --gecos "" --shell=/bin/bash alia
+
+# Install wkhtmltopdf
+#RUN curl -o wkhtmltox.deb -SL http://nightly.odoo.com/extra/wkhtmltox-0.12.1.2_linux-jessie-amd64.deb \
+#        && echo '40e8b906de658a2221b15e4e8cd82565a47d7ee8 wkhtmltox.deb' | sha1sum -c - \
+#        && dpkg --force-depends -i wkhtmltox.deb \
+#        && apt-get -y install -f --no-install-recommends \
+#        && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
+#        && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
+        
+USER alia
+ENV HOME /home/alia
+RUN mkdir /home/alia/odoo8
+WORKDIR /homw/alia/odoo8
+ADD . /home/alia/odoo8
+RUN virtualenv /home/alia/odoo8
+RUN /home/alia/odoo8/bin/python /home/alia/odoo8/bootstrap.py
+RUN /home/alia/odoo8/bin/buildout
